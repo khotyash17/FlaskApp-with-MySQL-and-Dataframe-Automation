@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: studentsdb
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+    networks:
+      - mynet
+  web:
+    build: .
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - mynet
+  csv-exporter:
+    build: ./corn
+    container_name: csv-exporter
+    depends_on:
+      - db
+    volumes:
+      - ./exports:/app/exports   # host folder where CSVs will be saved
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=us-east-1
+    networks:
+      - mynet
+  cron:
+    build: ./email-cron
+    container_name: cron-job
+    environment:
+      - OWNER_EMAIL=${OWNER_EMAIL}
+      - OWNER_PASS=${OWNER_PASS}
+      - TO_EMAIL=${TO_EMAIL}
+      - ZIP_PASS=${ZIP_PASS}
+    volumes:
+      - ./exports:/app/exports
+    depends_on:
+      - web
+      - db
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge
+volumes:
+  db_data: {}
