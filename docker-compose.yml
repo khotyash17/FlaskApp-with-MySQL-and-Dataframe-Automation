@@ -41,7 +41,7 @@ services:
       - OWNER_EMAIL=${OWNER_EMAIL}
       - OWNER_PASS=${OWNER_PASS}
       - TO_EMAIL=${TO_EMAIL}
-      - ZIP_PASS=${ZIP_PASS}
+      - XLS_PASS=${XLS_PASS}
     volumes:
       - ./exports:/app/exports
     depends_on:

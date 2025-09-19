@@ -1,29 +1,36 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
-# Install dependencies
+# Install dependencies (LibreOffice for XLS password)
 RUN apt-get update && apt-get install -y \
+    apt-utils \
+    gnupg \
     mariadb-client \
     bash \
     cron \
-    libreoffice \
-    qpdf \
+    libreoffice-core \
+    libreoffice-common \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python packages
-RUN pip install yagmail mysql-connector-python python-dotenv
+# Python deps
+RUN pip install --no-cache-dir yagmail mysql-connector-python pandas openpyxl msoffcrypto-tool
 
 WORKDIR /app
 
-# Copy scripts
-COPY run_cron.sh /app/run_cron.sh
-COPY send_mail.py /app/send_mail.py
-
-# Give execution rights
+COPY run_cron.sh send_mail.py /app/
 RUN chmod +x /app/run_cron.sh
 
-# Setup cron job (runs every 3 mins)
-RUN echo "*/3 * * * * /app/run_cron.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/cron \
-    && chmod 0644 /etc/cron.d/cron \
-    && crontab /etc/cron.d/cron
 
-CMD ["cron", "-f"]
+# Exports folder
+RUN mkdir -p /app/exports
+VOLUME /app/exports
+RUN touch /var/log/cron.log
+RUN chmod 0666 /var/log/cron.log
+
+
+# Cron job
+RUN echo "*/3 * * * * root /app/run_cron.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron \
+    && chmod 0644 /etc/cron.d/my-cron \
+    && crontab /etc/cron.d/my-cron
+
+# Keep container alive & show logs
+CMD cron && tail -f /var/log/cron.log
