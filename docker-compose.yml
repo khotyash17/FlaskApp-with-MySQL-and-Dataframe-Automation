@@ -47,6 +47,8 @@ services:
     depends_on:
       - web
       - db
+    env_file:
+      - .env
     networks:
       - mynet
 

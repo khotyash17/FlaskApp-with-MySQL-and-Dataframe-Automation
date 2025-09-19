@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Python deps
-RUN pip install --no-cache-dir yagmail mysql-connector-python pandas openpyxl msoffcrypto-tool
+RUN pip install --no-cache-dir yagmail mysql-connector-python pandas openpyxl xlsxwriter msoffcrypto-tool pymysql
 
 WORKDIR /app
 
