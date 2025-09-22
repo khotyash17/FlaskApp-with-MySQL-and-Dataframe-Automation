@@ -1,13 +1,14 @@
 # 📚 Student Registration System with CSV Exporter  
 
-This project is a **Dockerized Flask Web Application** integrated with **MySQL** for storing student registration data. It also includes a **CSV Exporter service** that automatically extracts student data from the MySQL database and saves it into CSV files for easy reporting and analysis.  
+This project is a **Dockerized Flask Web Application** integrated with **MySQL** for storing student registration data. It also includes a **CSV Exporter service** that automatically extracts student data from the MySQL database and saves it into CSV and xlxs files for easy reporting and analysis and using **Cron Job** this CSV file move to S3 evry 3 minutes and XLXS file will move to ower Gmail and this file is password protected.  
 
 ---
 ## 🚀 Features  
 - 🖥️ **Flask Web App** – Register and manage student data through a simple UI.  
 - 🗄️ **MySQL Database** – Persistent storage of student details.  
 - 🐳 **Docker Compose Setup** – Multi-container setup (Flask, MySQL, Exporter).  
-- 📤 **CSV Export Automation** – Export student records into timestamped CSV files.  
+- 📤 **CSV Export Automation** – Export student records into timestamped CSV files To **S3**.
+- 📧 **Gmail Automation** – Automatically send exported CSV files to the owner’s email via Gmail SMTP and file is password protected.
 - 🔗 **Custom Networking** – Containers communicate seamlessly via Docker bridge network.  
 
 ---
