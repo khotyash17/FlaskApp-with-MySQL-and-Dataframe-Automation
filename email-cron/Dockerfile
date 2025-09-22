@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir yagmail mysql-connector-python pandas openpyxl xl
 
 WORKDIR /app
 
+
 COPY run_cron.sh send_mail.py /app/
 RUN chmod +x /app/run_cron.sh
 
@@ -28,9 +29,9 @@ RUN chmod 0666 /var/log/cron.log
 
 
 # Cron job
-RUN echo "*/3 * * * * root /app/run_cron.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron \
+RUN echo "*/3 * * * * /app/run_cron.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron \
     && chmod 0644 /etc/cron.d/my-cron \
     && crontab /etc/cron.d/my-cron
 
 # Keep container alive & show logs
-CMD cron && tail -f /var/log/cron.log
+CMD ["cron", "-f"]

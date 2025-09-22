@@ -1,12 +1,18 @@
 #!/bin/sh
 set -e
 
-# Ensure log file exists
-touch /var/log/cron.log
-
 echo "🚀 Starting secure Excel export job..."
 
-# Run the Python script
-python3 /app/send_mail.py
+# Load environment variables
+if [ -f /app/.env ]; then
+    export $(grep -v '^#' /app/.env | xargs)
+else
+    echo "⚠️ .env file not found!"
+fi
+
+
+touch /var/log/cron.log
+
+/usr/local/bin/python3 /app/send_mail.py
 
 echo "✅ Job finished."

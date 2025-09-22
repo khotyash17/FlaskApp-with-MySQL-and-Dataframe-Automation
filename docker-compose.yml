@@ -44,6 +44,7 @@ services:
       - XLS_PASS=${XLS_PASS}
     volumes:
       - ./exports:/app/exports
+      - ./.env:/app/.env
     depends_on:
       - web
       - db
