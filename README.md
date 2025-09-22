@@ -20,16 +20,30 @@ This project is a **Dockerized Flask Web Application** integrated with **MySQL**
 
 ---
 ## 📂 Project Structure 
-project-root/ <br>
-│── app.py # Flask web application / <br>
-│── requirements.txt # Python dependencies / <br>
-│── Dockerfile # Flask app Dockerfile <br>
-│── docker-compose.yml # Multi-container setup <br>
-│── mysql-init/ # Auto-init SQL scripts for DB & table <br>
-│── corn/ # CSV exporter service <br>
-│ ├── Dockerfile <br>
-│ ├── export.sh # Export script <br>
-│── exports/ # CSV files will be saved here <br>
+pythonflask-jenkins/ <br>
+│── app.py                # Flask web application<br>
+│── requirements.txt      # Python dependencies<br>
+│── Dockerfile            # Flask app Dockerfile<br>
+│── docker-compose.yml    # Multi-container setup<br>
+│── README.md             # Project documentation<br>
+│<br>
+│── mysql-init/           # Auto-init SQL scripts for DB & table<br>
+│   └── init.sql<br>
+│<br>
+│── corn/                 # CSV exporter service<br>
+│   ├── Dockerfile<br>
+│   ├── export.sh         # Export script<br>
+│   └── send_mail.py      # Email sender (corn job)<br>
+│<br>
+│── email-cron/           # Email cron service<br>
+│   ├── Dockerfile<br>
+│   ├── run_cron.sh       # Cron runner script<br>
+│   └── send_mail.py      # Email sender script<br>
+│<br>
+│── exports/              # CSV files will be saved here<br>
+│<br>
+│── templates/            # HTML templates for Flask<br>
+│   └── register.html<br>
 
 ---
 
